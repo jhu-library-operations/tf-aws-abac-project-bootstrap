@@ -2,13 +2,6 @@ provider "aws" {}
 
 data "aws_caller_identity" "current" {}
 
-terraform {
-    backend "s3"{
-        bucket = "msel-ops-terraform-statefiles"
-        key = "lag/oriole/project_bootstrap"
-    }
-}
-
 resource "aws_iam_role" "dev_project_role" {
     name = format("prj-%s-dev", var.project_name)
     assume_role_policy = templatefile("${path.module}/policies/assume_dev_role_default_policy.json", { account_id = data.aws_caller_identity.current.account_id })
